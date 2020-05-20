@@ -7,11 +7,11 @@ Azure Security Center for IoT security module with Azure RTOS support offers the
 - Device behavior baselining based on custom alerts: Allows for clustering of devices into security groups and defining the expected behavior of each group. As IoT devices are typically designed to operate in well-defined and limited scenarios, it is easy to create a baseline that defines their expected behavior using a set of parameters. Any deviation from the baseline, triggers an alert.
 - Improve the security hygiene of the device: By leveraging the recommended infrastructure Azure Security Center for IoT provides, gain knowledge and insights about issues in your environment that impact and damage the security posture of your devices. Poor IoT device security posture can allow potential attacks to succeed if left unchanged, as security is always measured by the weakest link within any organization.
 
-![Monitoring Capabilities](asc_for_iot_monitoring_capabilities.png)
+![Monitoring Capabilities](img/asc_for_iot_monitoring_capabilities.png)
 
 Azure Security Center for IoT security module for Azure RTOS is provided as a free download for your devices. The Azure Security Center for IoT cloud service is available with a 30 day trial per Azure subscription. Download the Azure Security Center for IoT security module for Azure RTOS today to get started.
 
-For more information about Azure Security Center for IoT, please refer to this [link](https://docs.microsoft.com/en-us/azure/asc-for-iot/). 
+For more information about Azure Security Center for IoT, please refer to this [link](https://docs.microsoft.com/en-us/azure/asc-for-iot/).
 
 ---
 

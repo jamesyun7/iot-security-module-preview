@@ -56,7 +56,7 @@ static void _collector_info_cb(notifier_t *notifier, int message_num, void *payl
         log_error("Wrong collector type=[%d] or priority=[%d]", collector_internal_ptr->type, collector_internal_ptr->priority);
     } else {
         // Here need to be aligned with COLLECTOR_INFO_LENGTH
-        sprintf(info[collector_internal_ptr->type].data, "%d", g_collector_collections_intervals[collector_internal_ptr->priority]);
+        sprintf(info[collector_internal_ptr->type].data, "%lu", g_collector_collections_intervals[collector_internal_ptr->priority]);
         log_debug("Updated configuration for collector=[%s] with data=[%s]\n",
             g_collector_names[collector_internal_ptr->type],
             info[collector_internal_ptr->type].data);

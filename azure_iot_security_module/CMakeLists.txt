@@ -28,7 +28,8 @@ target_compile_definitions(${PROJECT_NAME}
     -DASC_CORE_MAX_EVENTS_IN_MEMORY=32
     -DASC_MESSAGE_MAX_SIZE=6128
     -DASC_EVENT_MAX_SIZE=2048
-    -DLOG_LEVEL=1
+    -DUSE_OBJECT_POOL
+    -DLOG_LEVEL=5
 )
 
 target_sources(${PROJECT_NAME}
@@ -57,7 +58,7 @@ target_sources(${PROJECT_NAME}
     ${CMAKE_CURRENT_LIST_DIR}/azure_iot_security_core/src/model/schema/schema_system_information.c
     ${CMAKE_CURRENT_LIST_DIR}/azure_iot_security_core/src/utils/notifier.c
     ${CMAKE_CURRENT_LIST_DIR}/azure_iot_security_core/src/utils/string_utils.c
-    
+
     # Azure RTOS source files
     # ${CMAKE_CURRENT_LIST_DIR}/src/security_module_iothub.c
     ${CMAKE_CURRENT_LIST_DIR}/src/security_module_mqtt.c
@@ -72,7 +73,7 @@ target_sources(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
-    
+
     ${CMAKE_CURRENT_LIST_DIR}/azure_iot_security_core/inc
     ${CMAKE_CURRENT_LIST_DIR}/inc
 )

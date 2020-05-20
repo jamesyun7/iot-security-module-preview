@@ -48,7 +48,7 @@ static IOTSECURITY_RESULT _schema_connection_create_serialize_ip(connection_crea
 
 
 const char* transport_protocol_to_str(TRANSPORT_PROTOCOL protocol) {
-    const char* ret;
+    const char* ret = NULL;
 
     switch (protocol) {
         case TRANSPORT_PROTOCOL_TCP:

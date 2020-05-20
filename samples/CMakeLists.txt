@@ -49,44 +49,45 @@ add_executable(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE
-    app
-    app/board
+        app
+        app/board
 )
+
+set(NXD_ENABLE_FILE_SERVERS OFF CACHE BOOL "Disable fileX dependency by netxduo.")
 
 # Build Libraries
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../azure_iot_security_module azure_iot_security_module)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/azure-iot-preview/nx_cloud nx_cloud)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/threadx)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/netxduo)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/netx_driver)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/MIMXRT1060-evk)
 
-# Pick up the required Azure RTOS components
-set(NXD_ENABLE_FILE_SERVERS OFF CACHE BOOL "Disable fileX dependency by netxduo.")
-add_azrtos_component_dir(threadx)
-add_azrtos_component_dir(netxduo)
-
-# The linker output should be .elf so we can keep track of it
-set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".elf")
+set_target_properties(${PROJECT_NAME}
+    PROPERTIES 
+        LINK_DEPENDS ${LINKER_SCRIPT}
+        SUFFIX ".elf"
+)
 
 # Apply the linker scripts to the app target
 message(STATUS "Using linker script: ${LINKER_SCRIPT}")
 target_link_options(${PROJECT_NAME} INTERFACE -T ${LINKER_SCRIPT})
 
-# Must use the PUBLIC section for the app target since the dependencies are
-# just pushing source to us
 target_link_libraries(${PROJECT_NAME}
     PUBLIC
-    
-    ${azrtos_targets}
-    netx_driver
-    MIMXRT1060-evk
-    azrtos::azure_iot_security_module
+        azrtos::threadx
+        azrtos::netxduo
+        MIMXRT1060-evk
+        netx_driver
+        azrtos::nx_cloud
+        azrtos::azure_iot_security_module
 )
 
 target_link_libraries(netxduo PRIVATE azrtos::nx_cloud)
 
-# If not Linux or Windows, create the BIN and HEX files for flashing
-add_custom_command( TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O binary ${PROJECT_NAME}.elf ${PROJECT_NAME}.bin
-    COMMAND ${CMAKE_OBJCOPY} -I binary -O ihex ${PROJECT_NAME}.bin ${PROJECT_NAME}.hex
-    COMMENT "Building .hex and .bin file"
-)
+target_link_options(${PROJECT_NAME}
+    PRIVATE 
+        -T${LINKER_SCRIPT} -Wl,-Map=${PROJECT_NAME}.map)
+
+create_bin_output(${PROJECT_NAME})
+firmware_size(${PROJECT_NAME})
