@@ -26,10 +26,9 @@ Install the following tools:
 ### Building
 
 1. `git clone https://github.com/azure-rtos/iot-security-module-preview.git`
-2. `mkdir azure_iot_security_module/cmake`
-3. `cd azure_iot_security_module/cmake`
-4. `cmake ..`
-5. `cmake --build .`
+2. `cd samples/tools`
+3. Execute `rebuild.bat`
+
 
 ## Reporting Security Vulnerabilities
 

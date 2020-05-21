@@ -14,7 +14,7 @@ In this demo, we simulate the fan control application on the device. A fan can b
 
     Save the **IoT Hub Connection String** for later use.
 
-    ![IoT Hub Configuration](../img/iothub_configuration.png)
+    ![IoT Hub Configuration](../../../img/iothub_configuration.png)
 
 
 2. Install Device Explorer.
@@ -26,11 +26,11 @@ In this demo, we simulate the fan control application on the device. A fan can b
 
     In the “Configuration” pane, copy/paste the IoT Hub Connection String created in step1, click the “Update” button to generate Key Name, Key Value and Target, and click the “Generate SAS” button to generate SAS.
 
-    ![Device Explorer Configuration](../img/device_explorer/device_explorer_configuration.png)
+    ![Device Explorer Configuration](../../../img/device_explorer/device_explorer_configuration.png)
 
     The device ID can be verified in Management pane. And save the **IoT Hub name**, **Device ID**, **SAS** for later use.
 
-    ![Device Explorer Management](../img/device_explorer/device_explorer_management.png)
+    ![Device Explorer Management](../../../img/device_explorer/device_explorer_management.png)
 
 
 # Configure and execute the example.
@@ -80,11 +80,11 @@ In this demo, we simulate the fan control application on the device. A fan can b
 
     In this demo, we simulate the fan control application on the device. A fan can be turned on or off. With the fan off, the demo increases the temperature by 1 degree till the temperature reaches the maximum value of 40. Once the temperature reaches 40, it does not increase any more.
 
-    ![Device Temperature Max at 40](../img/device_explorer/device_temperature_max_at_40.png)
+    ![Device Temperature Max at 40](../../../img/device_explorer/device_temperature_max_at_40.png)
 
     With fan turned on, the temperature decreases by 1 degree for every message till it reaches the minimum value of 0. Once the temperature reaches 0, it does not decrease any more.
 
-    ![Device Temperature Min at 0](../img/device_explorer/device_temperature_min_at_0.png)
+    ![Device Temperature Min at 0](../../../img/device_explorer/device_temperature_min_at_0.png)
 
 
 5. Manually send messages to the device.
@@ -98,8 +98,8 @@ In this demo, we simulate the fan control application on the device. A fan can b
 
     User can send TurnFanOn message to Device to turn fan on. Device receives this message (to turn on fan), and in response decreases the temperature by 1 till the temperature reaches the minimum value of 0.
 
-    ![Send TurnFanOn Message to Device](../img/device_explorer/send_turnfanon_message_to_device.png)
+    ![Send TurnFanOn Message to Device](../../../img/device_explorer/send_turnfanon_message_to_device.png)
 
     User can send TurnFanOff message to Device to turn fan off. Device receives this message (to turn off fan), and in response increases the temperature by 1 till the temperature reaches the maximum value of 40.
 
-    ![Send TurnFanOff Message to Device](../img/device_explorer/send_turnfanoff_message_to_device.png)
+    ![Send TurnFanOff Message to Device](../../../img/device_explorer/send_turnfanoff_message_to_device.png)
