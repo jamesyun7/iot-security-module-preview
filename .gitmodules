@@ -1,10 +1,9 @@
-[submodule "samples/lib/threadx"]
+[submodule "ThreadX"]
 	path = samples/lib/threadx
-	url = git@github.com:azure-rtos/threadx.git
-[submodule "samples/lib/netxduo"]
+	url = https://github.com/azure-rtos/threadx.git
+[submodule "NetX-Duo"]
 	path = samples/lib/netxduo
-	url = git@github.com:azure-rtos/netxduo.git
-[submodule "samples/lib/azure-iot-preview"]
+	url = https://github.com/azure-rtos/netxduo.git
+[submodule "azure-iot-preview"]
 	path = samples/lib/azure-iot-preview
-	url = git@github.com:azure-rtos/azure-iot-preview.git
-	branch = preview
+	url = https://github.com/azure-rtos/azure-iot-preview.git
