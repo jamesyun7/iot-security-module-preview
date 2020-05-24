@@ -29,7 +29,7 @@ target_compile_definitions(${PROJECT_NAME}
     -DASC_MESSAGE_MAX_SIZE=6128
     -DASC_EVENT_MAX_SIZE=2048
     -DUSE_OBJECT_POOL
-    -DLOG_LEVEL=5
+    -DLOG_LEVEL=2
 )
 
 target_sources(${PROJECT_NAME}

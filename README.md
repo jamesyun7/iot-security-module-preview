@@ -15,20 +15,11 @@ For more information about Azure Security Center for IoT, please refer to this [
 
 ---
 
-## Usage
+## Getting Started With IoT Security Module Guides
 
-### Prerequisites
+The following board specific guides will get you started with Azure RTOS and IoT Security Module:
 
-Install the following tools:
-
-* [CMake](https://cmake.org/download/) version 3.0 or later
-
-### Building
-
-1. `git clone https://github.com/azure-rtos/iot-security-module-preview.git`
-2. `cd samples/tools`
-3. Execute `rebuild.bat`
-
+> * Getting started with the NXP [MIMXRT1060-EVK](NXP/MIMXRT1060-EVK)
 
 ## Reporting Security Vulnerabilities
 
