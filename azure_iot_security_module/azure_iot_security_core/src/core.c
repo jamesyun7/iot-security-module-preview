@@ -182,26 +182,30 @@ IOTSECURITY_RESULT core_get(core_t* core_ptr, linked_list_security_message_t* ou
             }
 
             bool can_append = message_can_append(message_ptr, event_ptr);
-            bool is_message_too_big = !message_has_events(message_ptr) && !can_append;
+            bool is_event_too_big = !message_has_events(message_ptr) && !can_append;
 
-            // if the message is empty, it means that the event is too big
-            // we'll discard it and issue warning and try to collect the next event in the same collector
-            if (can_append || is_message_too_big) {
-                event_t* popped_event_ptr = NULL;
-                result = collector_pop_event(current_collector, &popped_event_ptr);
+            if (is_event_too_big) {
+                // configuration might be wrong
+                log_error("event size exceeds message size limit, discarding the event");
+
+                result = collector_pop_event(current_collector, NULL);
                 if (result != IOTSECURITY_RESULT_OK) {
+                    log_error("Failed to pop event, result=[%d]", result);
                     goto cleanup;
                 }
 
-                if (is_message_too_big) {
-                    log_error("event exceeded message size limit, discarding it for the overall good");
-                    event_deinit(event_ptr);
-                    event_ptr = NULL;
-                    continue;
-                }
+                event_deinit(event_ptr);
+                event_ptr = NULL;
+                continue;
             }
 
             if (can_append) {
+                result = collector_pop_event(current_collector, NULL);
+                if (result != IOTSECURITY_RESULT_OK) {
+                    log_error("Failed to pop event, result=[%d]", result);
+                    goto cleanup;
+                }
+
                 result = message_append(message_ptr, event_ptr);
 
                 event_deinit(event_ptr);

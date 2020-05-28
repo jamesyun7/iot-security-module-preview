@@ -27,6 +27,15 @@
 #define SCHEMA_EXTRA_DETAILS_BUFFER_MAX_SIZE 256
 #define EVENT_OBJECT_POOL_COUNT ASC_CORE_MAX_EVENTS_IN_MEMORY
 
+#define EVENT_END_SIZE (sizeof("],\"IsEmpty\":false}"))
+
+typedef enum EVENT_STATUS_TAG {
+    EVENT_STATUS_UNINITIALIZED    = 0,
+    EVENT_STATUS_PROCESSING       = 1,
+    EVENT_STATUS_EXCEPTION        = 2,
+    EVENT_STATUS_OK               = 3,
+} EVENT_STATUS;
+
 typedef struct event event_t;
 
 OBJECT_POOL_DECLARATIONS(event_t, EVENT_OBJECT_POOL_COUNT);
@@ -49,6 +58,16 @@ event_t* event_init(const char* payload_schema_version, const char* name, const 
  * @param event_ptr    event ptr
  */
 void event_deinit(event_t* event_ptr);
+
+
+/**
+ * @brief Getter event status
+ *
+ * @param event_ptr    event ptr
+ *
+ * @return event status
+ */
+EVENT_STATUS event_get_status(event_t* event_ptr);
 
 
 /**
@@ -151,6 +170,27 @@ bool event_is_empty(event_t* event_ptr);
  * @return event length
  */
 uint32_t event_get_length(event_t* event_ptr);
+
+
+/**
+ * @brief Getter event capacity
+ *
+ * @param event_ptr    event ptr
+ *
+ * @return event capacity
+ */
+uint32_t event_get_capacity(event_t* event_ptr);
+
+
+/**
+ * @brief Check if is it possible to append the payload to the given event
+ *
+ * @param event_ptr    event ptr
+ * @param payload      payload
+ *
+ * @return true if there is enough space, false otherwise
+ */
+bool event_can_append(event_t* event_ptr, asc_span payload);
 
 
 #ifdef COLLECTOR_SYSTEM_INFORMATION_ENABLED
