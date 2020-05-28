@@ -193,12 +193,10 @@ bool azure_mqtt_start(CHAR *iot_hub_hostname, CHAR *iot_device_id, CHAR *iot_sas
         }
     }
 
-    CHAR mqtt_security_message_topic_name[MQTT_TOPIC_NAME_LENGTH] = { 0 };
+    static CHAR mqtt_security_message_topic_name[MQTT_TOPIC_NAME_LENGTH] = { 0 };
     snprintf(mqtt_security_message_topic_name, sizeof(mqtt_security_message_topic_name), PUBLISH_SECURITY_MESSAGE_TOPIC, iot_device_id);
 
-    printf("Topic name=[%s]\r\n", mqtt_security_message_topic_name);
-
-    if (security_module_mqtt_init(&security_module, &mqtt_client, "devices/rtos/messages/events/%%24.ct=application%%2Fjson&%%24.ce=utf-8&%%24.ifid=urn%%3Aazureiot%%3ASecurity%%3ASecurityAgent%%3A1", time))
+    if (security_module_mqtt_init(&security_module, &mqtt_client, mqtt_security_message_topic_name, time))
     {
         printf("Error in creating security module: 0x%02x\r\n", status);
         return false;

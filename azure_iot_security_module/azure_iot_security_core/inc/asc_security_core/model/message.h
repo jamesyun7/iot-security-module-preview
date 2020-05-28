@@ -1,3 +1,4 @@
+
 /**************************************************************************/
 /*                                                                        */
 /*       Copyright (c) Microsoft Corporation. All rights reserved.        */
@@ -19,6 +20,16 @@
 
 #define MESSAGE_SCHEMA_VERSION "1.0"
 #define MESSAGE_OBJECT_POOL_COUNT ASC_CORE_MAX_MESSAGES_IN_MEMORY
+#define MESSAGE_END_SIZE (sizeof("]}"))
+
+
+typedef enum MESSAGE_STATUS_TAG {
+    MESSAGE_STATUS_UNINITIALIZED    = 0,
+    MESSAGE_STATUS_PROCESSING       = 1,
+    MESSAGE_STATUS_EXCEPTION        = 2,
+    MESSAGE_STATUS_OK               = 3,
+} MESSAGE_STATUS;
+
 
 typedef struct message message_t;
 
@@ -44,10 +55,20 @@ void message_deinit(message_t* message_ptr);
 
 
 /**
+ * @brief Getter message status
+ *
+ * @param event_ptr    message ptr
+ *
+ * @return message status
+ */
+MESSAGE_STATUS message_get_status(message_t* message_ptr);
+
+
+/**
  * @brief Serialize the given message to a json string.
  *        Allocate memory for the given buffer.
  *
- * @param message_ptr    message ptr
+ * @param message_ptr       message ptr
  * @param buffer            out param: the message string in json
  * @param size              buffer size
  *

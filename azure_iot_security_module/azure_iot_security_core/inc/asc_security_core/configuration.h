@@ -52,6 +52,11 @@
 #define ASC_EVENT_MAX_SIZE 2048
 #endif
 
+// The maximum size of a security event payload
+#ifndef ASC_PAYLOAD_MAX_SIZE
+#define ASC_PAYLOAD_MAX_SIZE 500
+#endif
+
 // The maximum number of network events to store in memory
 #ifndef ASC_COLLECTOR_CONNECTION_CREATE_MAX_OBJECTS_IN_CACHE
 #define ASC_COLLECTOR_CONNECTION_CREATE_MAX_OBJECTS_IN_CACHE 128

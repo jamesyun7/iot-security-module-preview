@@ -20,12 +20,6 @@
 #include "asc_security_core/object_pool.h"
 #include "asc_security_core/utils/string_utils.h"
 
-typedef enum MESSAGE_STATUS_TAG {
-    MESSAGE_STATUS_UNINITIALIZED    = 0,
-    MESSAGE_STATUS_PROCESSING       = 1,
-    MESSAGE_STATUS_EXCEPTION        = 2,
-    MESSAGE_STATUS_OK               = 3,
-} MESSAGE_STATUS;
 
 typedef struct message {
     COLLECTION_INTERFACE(struct message);
@@ -56,8 +50,8 @@ OBJECT_POOL_DEFINITIONS(message_t, MESSAGE_OBJECT_POOL_COUNT);
  *
  * @return IOTSECRUITY_RESULT
  */
-static IOTSECURITY_RESULT _Message_Build(message_t* message_ptr);
-static IOTSECURITY_RESULT _Message_SetStatus(message_t* message_ptr, MESSAGE_STATUS status);
+static IOTSECURITY_RESULT _message_build(message_t* message_ptr);
+static IOTSECURITY_RESULT _message_set_status(message_t* message_ptr, MESSAGE_STATUS status);
 
 
 message_t* message_init(const char* agent_id, const char* agent_version) {
@@ -131,7 +125,7 @@ cleanup:
     if (result != IOTSECURITY_RESULT_OK) {
         log_error("Failed to create a message, result=[%d]", result);
 
-        _Message_SetStatus(message_ptr, MESSAGE_STATUS_EXCEPTION);
+        _message_set_status(message_ptr, MESSAGE_STATUS_EXCEPTION);
 
         message_deinit(message_ptr);
         message_ptr = NULL;
@@ -155,7 +149,18 @@ void message_deinit(message_t* message_ptr) {
 }
 
 
-static IOTSECURITY_RESULT _Message_Build(message_t* message_ptr) {
+MESSAGE_STATUS message_get_status(message_t* message_ptr) {
+    MESSAGE_STATUS status = MESSAGE_STATUS_UNINITIALIZED;
+
+    if (message_ptr != NULL) {
+        status = message_ptr->status;
+    }
+
+    return status;
+}
+
+
+static IOTSECURITY_RESULT _message_build(message_t* message_ptr) {
     IOTSECURITY_RESULT result = IOTSECURITY_RESULT_OK;
 
     if (message_ptr == NULL) {
@@ -192,7 +197,7 @@ static IOTSECURITY_RESULT _Message_Build(message_t* message_ptr) {
         goto cleanup;
     }
 
-    result = _Message_SetStatus(message_ptr, MESSAGE_STATUS_OK);
+    result = _message_set_status(message_ptr, MESSAGE_STATUS_OK);
     if (result != IOTSECURITY_RESULT_OK) {
         log_error("Failed to set message status, result=[%d]", result);
         goto cleanup;
@@ -201,14 +206,14 @@ cleanup:
     if (result != IOTSECURITY_RESULT_OK) {
         log_error("Failed to build message, result=[%d]", result);
 
-        _Message_SetStatus(message_ptr, MESSAGE_STATUS_EXCEPTION);
+        _message_set_status(message_ptr, MESSAGE_STATUS_EXCEPTION);
     }
 
     return result;
 }
 
 
-static IOTSECURITY_RESULT _Message_SetStatus(message_t* message_ptr, MESSAGE_STATUS status) {
+static IOTSECURITY_RESULT _message_set_status(message_t* message_ptr, MESSAGE_STATUS status) {
     IOTSECURITY_RESULT result = IOTSECURITY_RESULT_OK;
 
     if (message_ptr != NULL) {
@@ -234,7 +239,7 @@ IOTSECURITY_RESULT message_to_json(message_t* message_ptr, char* buffer, uint32_
     }
 
     // build the message if needed
-    result = _Message_Build(message_ptr);
+    result = _message_build(message_ptr);
     if (result != IOTSECURITY_RESULT_OK) {
         log_error("Failed to build message, result=[%d]", result);
         goto cleanup;
@@ -256,7 +261,7 @@ cleanup:
     if (result != IOTSECURITY_RESULT_OK) {
         log_error("Failed to retrieve message data, result=[%d]", result);
 
-        _Message_SetStatus(message_ptr, MESSAGE_STATUS_EXCEPTION);
+        _message_set_status(message_ptr, MESSAGE_STATUS_EXCEPTION);
     }
 
     return result;
@@ -326,7 +331,7 @@ uint32_t message_get_capacity(message_t* message_ptr) {
 }
 
 bool message_can_append(message_t* message_ptr, event_t* event_ptr) {
-    return (event_get_length(event_ptr) + message_get_length(message_ptr) < message_get_capacity(message_ptr));
+    return event_get_length(event_ptr) + message_get_length(message_ptr) < message_get_capacity(message_ptr) - (uint32_t)MESSAGE_END_SIZE;
 }
 
 
